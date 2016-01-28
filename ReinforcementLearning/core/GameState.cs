@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace core
 {
-    public class Components
+    public class GameState
     {
         public int UserHp { get; set; }
         public int UserPos { get; set; }
