@@ -14,129 +14,218 @@ namespace ReinforcementLearning
 {
     public partial class ReinforcementLearning : Form
     {
-        private GameState _state;
+        private GameState _currentState;
+        private GameState[] _actionStateArray;
+        private QLearningAgent _agent;
+
+        private int _maxUserHp = 5;
+        private int _maxTowerHp = 10;
+        private int _maxUserPos = 2;
+
+        private int _episodeNumber = 1;
+        private int _stepCount;
+        private double _totalReward;
 
         public ReinforcementLearning()
         {
-            _state = new GameState(5, 1, 5);
-
             InitializeComponent();
         }
 
         private void ReinforcementLearning_Load(object sender, EventArgs e)
         {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            resetModel();
+            resetEpisode();
+        }
 
-            // initialize
-            QLearningAgent agent = new QLearningAgent();
-            agent.alpha = 0.2;
-            agent.gamma = 0.8;
-            agent.epsilon = 0.05;
+        private void learningTimer_Tick(object sender, EventArgs e)
+        {
+            renderModel();
+        }
+
+        private void renderModel()
+        {
+            var gContext = BufferedGraphicsManager.Current;
+            var buffer = gContext.Allocate(labelRenderingArea.CreateGraphics(), labelRenderingArea.DisplayRectangle);
+
+            buffer.Graphics.Clear(Color.LightSteelBlue);
+
+            GameStateRender.render(buffer.Graphics, _currentState, 20, 20);
+
+            foreach (var elem in _actionStateArray.Select((s, a) => new { State = s, Action = a }))
+            {
+                if (elem.State == null) continue;
+
+                if (elem.Action == (int)core.Action.LEFT)
+                    GameStateRender.render(buffer.Graphics, elem.State, 150, 150);
+                else if (elem.Action == (int)core.Action.STOP)
+                    GameStateRender.render(buffer.Graphics, elem.State, 250, 250);
+                else if (elem.Action == (int)core.Action.RIGHT)
+                    GameStateRender.render(buffer.Graphics, elem.State, 350, 350);
+            }
+
+            buffer.Render(labelRenderingArea.CreateGraphics());
+            buffer.Dispose();
+        }
+
+        private void resetModel()
+        {
+            _agent = new QLearningAgent();
+
+            trackBarAlpha.Value = 2;
+            trackBarGamma.Value = 8;
+            trackBarEpsilon.Value = 1;
 
             // regiser state-qvalue
-            foreach (var userHp in Enumerable.Range(0, 6))
-                foreach (var userPos in Enumerable.Range(0, 3))
-                    foreach (var towerHp in Enumerable.Range(0, 11))
+            foreach (var userHp in Enumerable.Range(0, _maxUserHp + 1))
+            {
+                foreach (var userPos in Enumerable.Range(0, _maxUserPos + 1))
+                {
+                    foreach (var towerHp in Enumerable.Range(0, _maxTowerHp + 1))
                     {
                         var state = new GameState(userHp, userPos, towerHp);
 
                         foreach (var action in state.GetActionSet())
                         {
-                            agent.registerStateQValue(state, action, 0);
+                            _agent.registerStateQValue(state, action, 0);
                         }
                     }
-
-            //// learning process ...
-            //foreach (var episode in Enumerable.Range(1, 20))
-            //{
-            //    Console.WriteLine("Episode: " + episode);
-            //    processEpisode(agent);
-            //    Console.WriteLine();
-            //}
+                }
+            }
         }
 
-        private void processEpisode(QLearningAgent agent)
+        private void resetEpisode()
         {
-            var s = new GameState(5, 1, 10);
+            _stepCount = 0;
+            _totalReward = 0;
+            _currentState = new GameState(_maxUserHp, 1, _maxTowerHp);
+            _actionStateArray = new GameState[3];
+        }
 
-            var stepCount = 0;
-            var totalReward = 0.0;
-            while (s.UserHp > 0 && s.TowerHp > 0)
+        private void previewNextSep()
+        {
+            foreach (var action in _currentState.GetActionSet())
+                _actionStateArray[(int)action] = core.Environment.GetNextState(_currentState, action);
+        }
+
+        private void selectNextStep()
+        {
+            var action = _agent.getAction(_currentState);
+            foreach (var elem in _actionStateArray.Select((s, a) => new { State = s, Action = a }))
             {
-                core.Action a = agent.getAction(s);
-                var nextS = s.Clone();
-
-                if (a == core.Action.LEFT)
-                    nextS = new GameState(nextS.UserHp, nextS.UserPos - 1, nextS.TowerHp);
-                else if (a == core.Action.RIGHT)
-                    nextS = new GameState(nextS.UserHp, nextS.UserPos + 1, nextS.TowerHp);
-
-                // time delay penalty
-                var reward = -1.0;
-
-                if (nextS.UserPos == 2)
-                {
-                    nextS = new GameState(nextS.UserHp - 1, nextS.UserPos, nextS.TowerHp - 1);
-                    reward += 10;
-                }
-
-                if (nextS.UserHp == 0)
-                    reward -= 100000;
-                else if (nextS.TowerHp == 0)
-                    reward = 100000;
-
-                if (nextS.UserPos == 0)
-                {
-                    reward += (5 - nextS.UserHp);
-                    nextS = new GameState(5, nextS.UserPos, nextS.TowerHp);
-                }
-
-                totalReward += reward;
-                agent.update(s, a, nextS, reward);
-                s = nextS;
-
-                Console.WriteLine("State: {0}, Action: {1}, Reward: {2}", s, a, reward);
-
-                Thread.Sleep(100);
-                stepCount++;
+                if ((int)action != elem.Action) _actionStateArray[elem.Action] = null;
             }
 
-            Console.WriteLine("STEPS: " + stepCount);
-            Console.WriteLine("TOTAL REWARD: " + totalReward);
+            _stepCount++;
+            textBoxStepCount.Text = _stepCount.ToString();
         }
 
-        private void learningTimer_Tick(object sender, EventArgs e)
+        private bool updateNextStep()
         {
-            var dPos = 1;
-            if (_state.UserPos == 2) dPos = -1;
-            _state = new GameState(_state.UserHp, _state.UserPos + dPos, _state.TowerHp);
+            foreach (var elem in _actionStateArray.Select((s, a) => new { State = s, Action = a }))
+            {
+                if (elem.State != null)
+                {
+                    var nextS = core.Environment.GetNextState(_currentState, (core.Action)elem.Action);
+                    var reward = core.Environment.GetReward(_currentState, (core.Action)elem.Action);
+                    _agent.update(_currentState, (core.Action)elem.Action, nextS, reward);
+                    _currentState = nextS;
 
-            var currentContext = BufferedGraphicsManager.Current;
-            var buffer = currentContext.Allocate(labelRenderingArea.CreateGraphics(), labelRenderingArea.DisplayRectangle);
+                    _totalReward += reward;
+                }
+            }
 
-            buffer.Graphics.Clear(Color.LightSteelBlue);
-            //GameStateRender.renderBackground(buffer.Graphics, _state, 20, 20);
-            //GameStateRender.renderBackground(buffer.Graphics, _state, 150, 150);
-            //GameStateRender.renderBackground(buffer.Graphics, _state, 250, 250);
-            //GameStateRender.renderBackground(buffer.Graphics, _state, 350, 350);
+            _actionStateArray[0] = null;
+            _actionStateArray[1] = null;
+            _actionStateArray[2] = null;
 
-            //GameStateRender.renderHero(buffer.Graphics, _state, 20, 20);
-            //GameStateRender.renderHero(buffer.Graphics, _state, 150, 150);
-            //GameStateRender.renderHero(buffer.Graphics, _state, 250, 250);
-            //GameStateRender.renderHero(buffer.Graphics, _state, 350, 350);
+            textBoxTotalReward.Text = _totalReward.ToString();
 
-            //GameStateRender.renderHp(buffer.Graphics, _state, 20, 20);
-            //GameStateRender.renderHp(buffer.Graphics, _state, 150, 150);
-            //GameStateRender.renderHp(buffer.Graphics, _state, 250, 250);
-            //GameStateRender.renderHp(buffer.Graphics, _state, 350, 350);
+            if (_currentState.UserHp == 0 || _currentState.TowerHp == 0)
+            {
+                updateEpisode();
+                resetEpisode();
+                return false;
+            }
 
-            GameStateRender.render(buffer.Graphics, _state, 20, 20);
-            GameStateRender.render(buffer.Graphics, _state, 150, 150);
-            GameStateRender.render(buffer.Graphics, _state, 250, 250);
-            GameStateRender.render(buffer.Graphics, _state, 350, 350);
+            return true;
+        }
 
-            buffer.Render(labelRenderingArea.CreateGraphics());
-            buffer.Dispose();
+        private void updateEpisode()
+        {
+            var row = new string[]
+            {
+                _episodeNumber.ToString(),
+                _stepCount.ToString(),
+                (_currentState.UserHp > 0 ? "Win" : "Lose"),
+                _totalReward.ToString()
+            };
+            var item = new ListViewItem(row);
+            listViewEpisodeLogs.Items.Add(item);
+            listViewEpisodeLogs.Items[listViewEpisodeLogs.Items.Count - 1].EnsureVisible();
+
+            _episodeNumber++;
+        }
+
+        private void buttonResetModel_Click(object sender, EventArgs e)
+        {
+            resetModel();
+            resetEpisode();
+            renderModel();
+        }
+
+        private void buttonPreviewNextStep_Click(object sender, EventArgs e)
+        {
+            previewNextSep();
+        }
+
+        private void buttonSelectNextStep_Click(object sender, EventArgs e)
+        {
+            selectNextStep();
+        }
+
+
+        private void buttonGotoNextStep_Click(object sender, EventArgs e)
+        {
+            updateNextStep();
+        }
+
+        private void buttonRunEpisode_Click(object sender, EventArgs e)
+        {
+            new Task(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, int.Parse(textBoxEpisode.Text)))
+                {
+                    while (true)
+                    {
+                        Thread.Sleep(50);
+                        previewNextSep();
+                        Thread.Sleep(50);
+                        selectNextStep();
+                        Thread.Sleep(50);
+                        var keepGoing = updateNextStep();
+
+                        if (!keepGoing) break;
+                    }
+                }
+            }).Start();
+       }
+
+        private void trackBarAlpha_ValueChanged(object sender, EventArgs e)
+        {
+            _agent.alpha = (double)trackBarAlpha.Value / trackBarAlpha.Maximum;
+            labelAlpha.Text = string.Format("alpha {0:0.00}", _agent.alpha);
+        }
+
+        private void trackBarGamma_ValueChanged(object sender, EventArgs e)
+        {
+            _agent.gamma = (double)trackBarGamma.Value / trackBarGamma.Maximum;
+            labelGamma.Text = string.Format("gamma {0:0.00}", _agent.gamma);
+        }
+
+        private void trackBarEpsilon_ValueChanged(object sender, EventArgs e)
+        {
+            _agent.epsilon = (double)trackBarEpsilon.Value / trackBarEpsilon.Maximum;
+            labelEpsilon.Text = string.Format("epsilon {0:0.00}", _agent.epsilon);
         }
 
     }

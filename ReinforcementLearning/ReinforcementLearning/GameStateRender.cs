@@ -49,7 +49,7 @@ namespace ReinforcementLearning
             renderHp(g, state, x, y);
         }
 
-        public static void renderBackground(Graphics g, GameState state, int x, int y)
+        private static void renderBackground(Graphics g, GameState state, int x, int y)
         {
             foreach (var elem in _backgroundImageList)
             {
@@ -57,14 +57,14 @@ namespace ReinforcementLearning
             }
        }
 
-        public static void renderHero(Graphics g, GameState state, int x, int y)
+        private static void renderHero(Graphics g, GameState state, int x, int y)
         {
              g.DrawImage(_heroImageList[state.UserPos].Item1,
                 x + _heroImageList[state.UserPos].Item2.X,
                 y + _heroImageList[state.UserPos].Item2.Y);
         }
 
-        public static void renderHp(Graphics g, GameState state, int x, int y)
+        private static void renderHp(Graphics g, GameState state, int x, int y)
         {
             var brush = new SolidBrush(Color.FromArgb(180, Color.DarkRed));
 

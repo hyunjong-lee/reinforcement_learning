@@ -21,7 +21,7 @@ namespace core
         public QLearningAgent()
         {
             _stateQValueMap = new Dictionary<Tuple<GameState, Action>, double>();
-            _rand = new Random(DateTime.Now.Millisecond);
+            _rand = new Random(8713);
         }
 
         public void registerStateQValue(GameState state, Action action, double qValue)
@@ -90,7 +90,8 @@ namespace core
         public void update(GameState state, Action action, GameState nextState, double reward)
         {
             var qValue = 
-                (1 - alpha) * getQValue(state, action) +
+                //(1 - alpha) * getQValue(state, action) +
+                getQValue(state, action) +
                 alpha * (reward + gamma * computeValueFromQValues(nextState));
 
             _stateQValueMap[Tuple.Create(state, action)] = qValue;

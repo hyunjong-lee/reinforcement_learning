@@ -33,33 +33,37 @@
             this.learningTimer = new System.Windows.Forms.Timer(this.components);
             this.labelRenderingArea = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.labelAlpha = new System.Windows.Forms.Label();
-            this.trackBarAlpha = new System.Windows.Forms.TrackBar();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.buttonNextStep = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxReward = new System.Windows.Forms.TextBox();
+            this.buttonSelectNextStep = new System.Windows.Forms.Button();
+            this.listViewEpisodeLogs = new System.Windows.Forms.ListView();
+            this.no = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.result = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.totalReward = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.textBoxTotalReward = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonResetModel = new System.Windows.Forms.Button();
+            this.buttonRunEpisode = new System.Windows.Forms.Button();
+            this.buttonGotoNextStep = new System.Windows.Forms.Button();
+            this.buttonPreviewNextStep = new System.Windows.Forms.Button();
+            this.trackBarEpsilon = new System.Windows.Forms.TrackBar();
+            this.labelEpsilon = new System.Windows.Forms.Label();
+            this.trackBarGamma = new System.Windows.Forms.TrackBar();
+            this.labelGamma = new System.Windows.Forms.Label();
+            this.trackBarAlpha = new System.Windows.Forms.TrackBar();
+            this.labelAlpha = new System.Windows.Forms.Label();
+            this.labelStepCount = new System.Windows.Forms.Label();
+            this.textBoxStepCount = new System.Windows.Forms.TextBox();
+            this.stepCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.textBoxEpisode = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarEpsilon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarGamma)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAlpha)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             this.SuspendLayout();
             // 
             // learningTimer
             // 
             this.learningTimer.Enabled = true;
-            this.learningTimer.Interval = 500;
             this.learningTimer.Tick += new System.EventHandler(this.learningTimer_Tick);
             // 
             // labelRenderingArea
@@ -77,24 +81,200 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.listView1);
+            this.panel1.Controls.Add(this.textBoxEpisode);
+            this.panel1.Controls.Add(this.textBoxStepCount);
+            this.panel1.Controls.Add(this.labelStepCount);
+            this.panel1.Controls.Add(this.buttonSelectNextStep);
+            this.panel1.Controls.Add(this.listViewEpisodeLogs);
             this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.textBoxReward);
+            this.panel1.Controls.Add(this.textBoxTotalReward);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.buttonNextStep);
-            this.panel1.Controls.Add(this.trackBar2);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.trackBar1);
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.buttonResetModel);
+            this.panel1.Controls.Add(this.buttonRunEpisode);
+            this.panel1.Controls.Add(this.buttonGotoNextStep);
+            this.panel1.Controls.Add(this.buttonPreviewNextStep);
+            this.panel1.Controls.Add(this.trackBarEpsilon);
+            this.panel1.Controls.Add(this.labelEpsilon);
+            this.panel1.Controls.Add(this.trackBarGamma);
+            this.panel1.Controls.Add(this.labelGamma);
             this.panel1.Controls.Add(this.trackBarAlpha);
             this.panel1.Controls.Add(this.labelAlpha);
             this.panel1.Location = new System.Drawing.Point(850, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(240, 681);
             this.panel1.TabIndex = 1;
+            // 
+            // buttonSelectNextStep
+            // 
+            this.buttonSelectNextStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelectNextStep.Location = new System.Drawing.Point(3, 224);
+            this.buttonSelectNextStep.Name = "buttonSelectNextStep";
+            this.buttonSelectNextStep.Size = new System.Drawing.Size(234, 25);
+            this.buttonSelectNextStep.TabIndex = 15;
+            this.buttonSelectNextStep.Text = "Select Next Step";
+            this.buttonSelectNextStep.UseVisualStyleBackColor = true;
+            this.buttonSelectNextStep.Click += new System.EventHandler(this.buttonSelectNextStep_Click);
+            // 
+            // listViewEpisodeLogs
+            // 
+            this.listViewEpisodeLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewEpisodeLogs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.no,
+            this.stepCount,
+            this.result,
+            this.totalReward});
+            this.listViewEpisodeLogs.Location = new System.Drawing.Point(3, 402);
+            this.listViewEpisodeLogs.Name = "listViewEpisodeLogs";
+            this.listViewEpisodeLogs.Size = new System.Drawing.Size(234, 276);
+            this.listViewEpisodeLogs.TabIndex = 14;
+            this.listViewEpisodeLogs.UseCompatibleStateImageBehavior = false;
+            this.listViewEpisodeLogs.View = System.Windows.Forms.View.Details;
+            // 
+            // no
+            // 
+            this.no.Text = "No";
+            this.no.Width = 34;
+            // 
+            // result
+            // 
+            this.result.Text = "Result";
+            // 
+            // totalReward
+            // 
+            this.totalReward.Text = "Reward";
+            this.totalReward.Width = 62;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 382);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 17);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Episodes";
+            // 
+            // textBoxTotalReward
+            // 
+            this.textBoxTotalReward.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTotalReward.Location = new System.Drawing.Point(98, 342);
+            this.textBoxTotalReward.Name = "textBoxTotalReward";
+            this.textBoxTotalReward.ReadOnly = true;
+            this.textBoxTotalReward.Size = new System.Drawing.Size(139, 25);
+            this.textBoxTotalReward.TabIndex = 11;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 347);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(87, 17);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Total Reward";
+            // 
+            // buttonResetModel
+            // 
+            this.buttonResetModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonResetModel.Location = new System.Drawing.Point(3, 3);
+            this.buttonResetModel.Name = "buttonResetModel";
+            this.buttonResetModel.Size = new System.Drawing.Size(234, 34);
+            this.buttonResetModel.TabIndex = 9;
+            this.buttonResetModel.Text = "Reset Model";
+            this.buttonResetModel.UseVisualStyleBackColor = true;
+            this.buttonResetModel.Click += new System.EventHandler(this.buttonResetModel_Click);
+            // 
+            // buttonRunEpisode
+            // 
+            this.buttonRunEpisode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRunEpisode.Location = new System.Drawing.Point(3, 280);
+            this.buttonRunEpisode.Name = "buttonRunEpisode";
+            this.buttonRunEpisode.Size = new System.Drawing.Size(164, 25);
+            this.buttonRunEpisode.TabIndex = 8;
+            this.buttonRunEpisode.Text = "Run Episode";
+            this.buttonRunEpisode.UseVisualStyleBackColor = true;
+            this.buttonRunEpisode.Click += new System.EventHandler(this.buttonRunEpisode_Click);
+            // 
+            // buttonGotoNextStep
+            // 
+            this.buttonGotoNextStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGotoNextStep.Location = new System.Drawing.Point(3, 252);
+            this.buttonGotoNextStep.Name = "buttonGotoNextStep";
+            this.buttonGotoNextStep.Size = new System.Drawing.Size(234, 25);
+            this.buttonGotoNextStep.TabIndex = 7;
+            this.buttonGotoNextStep.Text = "Goto Next Step";
+            this.buttonGotoNextStep.UseVisualStyleBackColor = true;
+            this.buttonGotoNextStep.Click += new System.EventHandler(this.buttonGotoNextStep_Click);
+            // 
+            // buttonPreviewNextStep
+            // 
+            this.buttonPreviewNextStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonPreviewNextStep.Location = new System.Drawing.Point(3, 196);
+            this.buttonPreviewNextStep.Name = "buttonPreviewNextStep";
+            this.buttonPreviewNextStep.Size = new System.Drawing.Size(234, 25);
+            this.buttonPreviewNextStep.TabIndex = 6;
+            this.buttonPreviewNextStep.Text = "Preview Next Step";
+            this.buttonPreviewNextStep.UseVisualStyleBackColor = true;
+            this.buttonPreviewNextStep.Click += new System.EventHandler(this.buttonPreviewNextStep_Click);
+            // 
+            // trackBarEpsilon
+            // 
+            this.trackBarEpsilon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarEpsilon.Location = new System.Drawing.Point(98, 145);
+            this.trackBarEpsilon.Maximum = 20;
+            this.trackBarEpsilon.Name = "trackBarEpsilon";
+            this.trackBarEpsilon.Size = new System.Drawing.Size(135, 45);
+            this.trackBarEpsilon.TabIndex = 5;
+            this.trackBarEpsilon.ValueChanged += new System.EventHandler(this.trackBarEpsilon_ValueChanged);
+            // 
+            // labelEpsilon
+            // 
+            this.labelEpsilon.AutoSize = true;
+            this.labelEpsilon.Location = new System.Drawing.Point(6, 145);
+            this.labelEpsilon.Name = "labelEpsilon";
+            this.labelEpsilon.Size = new System.Drawing.Size(88, 17);
+            this.labelEpsilon.TabIndex = 4;
+            this.labelEpsilon.Text = "epsilon (0.01)";
+            // 
+            // trackBarGamma
+            // 
+            this.trackBarGamma.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarGamma.Location = new System.Drawing.Point(98, 94);
+            this.trackBarGamma.Name = "trackBarGamma";
+            this.trackBarGamma.Size = new System.Drawing.Size(135, 45);
+            this.trackBarGamma.TabIndex = 3;
+            this.trackBarGamma.ValueChanged += new System.EventHandler(this.trackBarGamma_ValueChanged);
+            // 
+            // labelGamma
+            // 
+            this.labelGamma.AutoSize = true;
+            this.labelGamma.Location = new System.Drawing.Point(5, 94);
+            this.labelGamma.Name = "labelGamma";
+            this.labelGamma.Size = new System.Drawing.Size(89, 17);
+            this.labelGamma.TabIndex = 2;
+            this.labelGamma.Text = "gamma (0.01)";
+            // 
+            // trackBarAlpha
+            // 
+            this.trackBarAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarAlpha.Location = new System.Drawing.Point(98, 43);
+            this.trackBarAlpha.Name = "trackBarAlpha";
+            this.trackBarAlpha.Size = new System.Drawing.Size(135, 45);
+            this.trackBarAlpha.TabIndex = 1;
+            this.trackBarAlpha.ValueChanged += new System.EventHandler(this.trackBarAlpha_ValueChanged);
             // 
             // labelAlpha
             // 
@@ -105,142 +285,41 @@
             this.labelAlpha.TabIndex = 0;
             this.labelAlpha.Text = "alpha (0.01)";
             // 
-            // trackBarAlpha
+            // labelStepCount
             // 
-            this.trackBarAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.labelStepCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarAlpha.Location = new System.Drawing.Point(98, 43);
-            this.trackBarAlpha.Name = "trackBarAlpha";
-            this.trackBarAlpha.Size = new System.Drawing.Size(135, 45);
-            this.trackBarAlpha.TabIndex = 1;
+            this.labelStepCount.AutoSize = true;
+            this.labelStepCount.Location = new System.Drawing.Point(9, 316);
+            this.labelStepCount.Name = "labelStepCount";
+            this.labelStepCount.Size = new System.Drawing.Size(75, 17);
+            this.labelStepCount.TabIndex = 16;
+            this.labelStepCount.Text = "Step Count";
             // 
-            // trackBar1
+            // textBoxStepCount
             // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxStepCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar1.Location = new System.Drawing.Point(98, 94);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(135, 45);
-            this.trackBar1.TabIndex = 3;
+            this.textBoxStepCount.Location = new System.Drawing.Point(98, 311);
+            this.textBoxStepCount.Name = "textBoxStepCount";
+            this.textBoxStepCount.ReadOnly = true;
+            this.textBoxStepCount.Size = new System.Drawing.Size(139, 25);
+            this.textBoxStepCount.TabIndex = 17;
             // 
-            // label1
+            // stepCount
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 94);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 17);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "gamma (0.01)";
+            this.stepCount.Text = "Step";
+            this.stepCount.Width = 49;
             // 
-            // trackBar2
+            // textBoxEpisode
             // 
-            this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxEpisode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar2.Location = new System.Drawing.Point(98, 145);
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(135, 45);
-            this.trackBar2.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 145);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "epsilon (0.01)";
-            // 
-            // buttonNextStep
-            // 
-            this.buttonNextStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonNextStep.Location = new System.Drawing.Point(3, 196);
-            this.buttonNextStep.Name = "buttonNextStep";
-            this.buttonNextStep.Size = new System.Drawing.Size(234, 34);
-            this.buttonNextStep.TabIndex = 6;
-            this.buttonNextStep.Text = "Preview Next Step";
-            this.buttonNextStep.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(3, 236);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(234, 34);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Goto Next Step";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(3, 276);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(234, 34);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Run Episode";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(3, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(234, 34);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Reset Model";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 322);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 17);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Total Reward";
-            // 
-            // textBoxReward
-            // 
-            this.textBoxReward.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxReward.Location = new System.Drawing.Point(3, 342);
-            this.textBoxReward.Name = "textBoxReward";
-            this.textBoxReward.ReadOnly = true;
-            this.textBoxReward.Size = new System.Drawing.Size(234, 25);
-            this.textBoxReward.TabIndex = 11;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 380);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 17);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Episodes";
-            // 
-            // listView1
-            // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.listView1.Location = new System.Drawing.Point(3, 397);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(234, 281);
-            this.listView1.TabIndex = 14;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.textBoxEpisode.Location = new System.Drawing.Point(173, 280);
+            this.textBoxEpisode.Name = "textBoxEpisode";
+            this.textBoxEpisode.Size = new System.Drawing.Size(64, 25);
+            this.textBoxEpisode.TabIndex = 18;
+            this.textBoxEpisode.Text = "1";
             // 
             // ReinforcementLearning
             // 
@@ -259,9 +338,9 @@
             this.Load += new System.EventHandler(this.ReinforcementLearning_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarEpsilon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarGamma)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAlpha)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -273,21 +352,26 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelAlpha;
         private System.Windows.Forms.TrackBar trackBarAlpha;
-        private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button buttonNextStep;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TrackBar trackBarGamma;
+        private System.Windows.Forms.Label labelGamma;
+        private System.Windows.Forms.TrackBar trackBarEpsilon;
+        private System.Windows.Forms.Label labelEpsilon;
+        private System.Windows.Forms.Button buttonPreviewNextStep;
+        private System.Windows.Forms.Button buttonGotoNextStep;
+        private System.Windows.Forms.Button buttonRunEpisode;
+        private System.Windows.Forms.Button buttonResetModel;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxReward;
+        private System.Windows.Forms.TextBox textBoxTotalReward;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ListView listViewEpisodeLogs;
+        private System.Windows.Forms.ColumnHeader no;
+        private System.Windows.Forms.ColumnHeader result;
+        private System.Windows.Forms.ColumnHeader totalReward;
+        private System.Windows.Forms.Button buttonSelectNextStep;
+        private System.Windows.Forms.Label labelStepCount;
+        private System.Windows.Forms.TextBox textBoxStepCount;
+        private System.Windows.Forms.ColumnHeader stepCount;
+        private System.Windows.Forms.TextBox textBoxEpisode;
     }
 }
 

@@ -61,8 +61,8 @@ namespace core
     public enum Action
     {
         LEFT,
-        RIGHT,
         STOP,
+        RIGHT,
         NONE,
     }
 }
