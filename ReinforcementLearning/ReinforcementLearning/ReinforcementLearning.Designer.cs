@@ -33,9 +33,13 @@
             this.learningTimer = new System.Windows.Forms.Timer(this.components);
             this.labelRenderingArea = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBoxEpisode = new System.Windows.Forms.TextBox();
+            this.textBoxStepCount = new System.Windows.Forms.TextBox();
+            this.labelStepCount = new System.Windows.Forms.Label();
             this.buttonSelectNextStep = new System.Windows.Forms.Button();
             this.listViewEpisodeLogs = new System.Windows.Forms.ListView();
             this.no = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.stepCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.result = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.totalReward = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
@@ -51,10 +55,7 @@
             this.labelGamma = new System.Windows.Forms.Label();
             this.trackBarAlpha = new System.Windows.Forms.TrackBar();
             this.labelAlpha = new System.Windows.Forms.Label();
-            this.labelStepCount = new System.Windows.Forms.Label();
-            this.textBoxStepCount = new System.Windows.Forms.TextBox();
-            this.stepCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.textBoxEpisode = new System.Windows.Forms.TextBox();
+            this.checkBoxCompact = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarEpsilon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarGamma)).BeginInit();
@@ -81,6 +82,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.checkBoxCompact);
             this.panel1.Controls.Add(this.textBoxEpisode);
             this.panel1.Controls.Add(this.textBoxStepCount);
             this.panel1.Controls.Add(this.labelStepCount);
@@ -103,6 +105,37 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(240, 681);
             this.panel1.TabIndex = 1;
+            // 
+            // textBoxEpisode
+            // 
+            this.textBoxEpisode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxEpisode.Location = new System.Drawing.Point(173, 280);
+            this.textBoxEpisode.Name = "textBoxEpisode";
+            this.textBoxEpisode.Size = new System.Drawing.Size(64, 25);
+            this.textBoxEpisode.TabIndex = 18;
+            this.textBoxEpisode.Text = "1";
+            // 
+            // textBoxStepCount
+            // 
+            this.textBoxStepCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxStepCount.Location = new System.Drawing.Point(98, 311);
+            this.textBoxStepCount.Name = "textBoxStepCount";
+            this.textBoxStepCount.ReadOnly = true;
+            this.textBoxStepCount.Size = new System.Drawing.Size(139, 25);
+            this.textBoxStepCount.TabIndex = 17;
+            // 
+            // labelStepCount
+            // 
+            this.labelStepCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelStepCount.AutoSize = true;
+            this.labelStepCount.Location = new System.Drawing.Point(9, 316);
+            this.labelStepCount.Name = "labelStepCount";
+            this.labelStepCount.Size = new System.Drawing.Size(75, 17);
+            this.labelStepCount.TabIndex = 16;
+            this.labelStepCount.Text = "Step Count";
             // 
             // buttonSelectNextStep
             // 
@@ -137,6 +170,11 @@
             // 
             this.no.Text = "No";
             this.no.Width = 34;
+            // 
+            // stepCount
+            // 
+            this.stepCount.Text = "Step";
+            this.stepCount.Width = 49;
             // 
             // result
             // 
@@ -185,7 +223,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonResetModel.Location = new System.Drawing.Point(3, 3);
             this.buttonResetModel.Name = "buttonResetModel";
-            this.buttonResetModel.Size = new System.Drawing.Size(234, 34);
+            this.buttonResetModel.Size = new System.Drawing.Size(145, 34);
             this.buttonResetModel.TabIndex = 9;
             this.buttonResetModel.Text = "Reset Model";
             this.buttonResetModel.UseVisualStyleBackColor = true;
@@ -285,41 +323,15 @@
             this.labelAlpha.TabIndex = 0;
             this.labelAlpha.Text = "alpha (0.01)";
             // 
-            // labelStepCount
+            // checkBoxCompact
             // 
-            this.labelStepCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelStepCount.AutoSize = true;
-            this.labelStepCount.Location = new System.Drawing.Point(9, 316);
-            this.labelStepCount.Name = "labelStepCount";
-            this.labelStepCount.Size = new System.Drawing.Size(75, 17);
-            this.labelStepCount.TabIndex = 16;
-            this.labelStepCount.Text = "Step Count";
-            // 
-            // textBoxStepCount
-            // 
-            this.textBoxStepCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxStepCount.Location = new System.Drawing.Point(98, 311);
-            this.textBoxStepCount.Name = "textBoxStepCount";
-            this.textBoxStepCount.ReadOnly = true;
-            this.textBoxStepCount.Size = new System.Drawing.Size(139, 25);
-            this.textBoxStepCount.TabIndex = 17;
-            // 
-            // stepCount
-            // 
-            this.stepCount.Text = "Step";
-            this.stepCount.Width = 49;
-            // 
-            // textBoxEpisode
-            // 
-            this.textBoxEpisode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxEpisode.Location = new System.Drawing.Point(173, 280);
-            this.textBoxEpisode.Name = "textBoxEpisode";
-            this.textBoxEpisode.Size = new System.Drawing.Size(64, 25);
-            this.textBoxEpisode.TabIndex = 18;
-            this.textBoxEpisode.Text = "1";
+            this.checkBoxCompact.AutoSize = true;
+            this.checkBoxCompact.Location = new System.Drawing.Point(154, 11);
+            this.checkBoxCompact.Name = "checkBoxCompact";
+            this.checkBoxCompact.Size = new System.Drawing.Size(79, 21);
+            this.checkBoxCompact.TabIndex = 19;
+            this.checkBoxCompact.Text = "Compact";
+            this.checkBoxCompact.UseVisualStyleBackColor = true;
             // 
             // ReinforcementLearning
             // 
@@ -372,6 +384,7 @@
         private System.Windows.Forms.TextBox textBoxStepCount;
         private System.Windows.Forms.ColumnHeader stepCount;
         private System.Windows.Forms.TextBox textBoxEpisode;
+        private System.Windows.Forms.CheckBox checkBoxCompact;
     }
 }
 

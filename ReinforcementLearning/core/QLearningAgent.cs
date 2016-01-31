@@ -89,9 +89,9 @@ namespace core
 
         public void update(GameState state, Action action, GameState nextState, double reward)
         {
-            var qValue = 
-                //(1 - alpha) * getQValue(state, action) +
-                getQValue(state, action) +
+            var qValue =
+                (1 - alpha) * getQValue(state, action) +
+                //getQValue(state, action) +
                 alpha * (reward + gamma * computeValueFromQValues(nextState));
 
             _stateQValueMap[Tuple.Create(state, action)] = qValue;

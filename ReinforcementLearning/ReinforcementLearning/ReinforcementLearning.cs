@@ -75,6 +75,10 @@ namespace ReinforcementLearning
             trackBarGamma.Value = 8;
             trackBarEpsilon.Value = 1;
 
+            _agent.alpha = 0.2;
+            _agent.gamma = 0.8;
+            _agent.epsilon = 0.05;
+
             // regiser state-qvalue
             foreach (var userHp in Enumerable.Range(0, _maxUserHp + 1))
             {
@@ -83,10 +87,14 @@ namespace ReinforcementLearning
                     foreach (var towerHp in Enumerable.Range(0, _maxTowerHp + 1))
                     {
                         var state = new GameState(userHp, userPos, towerHp);
+                        var compactState = new CompactGameState(userHp, userPos, towerHp);
 
                         foreach (var action in state.GetActionSet())
                         {
-                            _agent.registerStateQValue(state, action, 0);
+                            if (checkBoxCompact.Checked)
+                                _agent.registerStateQValue(compactState, action, 0);
+                            else
+                                _agent.registerStateQValue(state, action, 0);
                         }
                     }
                 }
@@ -97,7 +105,12 @@ namespace ReinforcementLearning
         {
             _stepCount = 0;
             _totalReward = 0;
-            _currentState = new GameState(_maxUserHp, 1, _maxTowerHp);
+
+            if (checkBoxCompact.Checked)
+                _currentState = new CompactGameState(_maxUserHp, 1, _maxTowerHp);
+            else
+                _currentState = new GameState(_maxUserHp, 1, _maxTowerHp);
+
             _actionStateArray = new GameState[3];
         }
 
@@ -116,7 +129,11 @@ namespace ReinforcementLearning
             }
 
             _stepCount++;
-            textBoxStepCount.Text = _stepCount.ToString();
+
+            Invoke(new System.Action(() =>
+            {
+                textBoxStepCount.Text = _stepCount.ToString();
+            }));
         }
 
         private bool updateNextStep()
@@ -138,7 +155,10 @@ namespace ReinforcementLearning
             _actionStateArray[1] = null;
             _actionStateArray[2] = null;
 
-            textBoxTotalReward.Text = _totalReward.ToString();
+            Invoke(new System.Action(() =>
+            {
+                textBoxTotalReward.Text = _totalReward.ToString();
+            }));
 
             if (_currentState.UserHp == 0 || _currentState.TowerHp == 0)
             {
@@ -159,9 +179,13 @@ namespace ReinforcementLearning
                 (_currentState.UserHp > 0 ? "Win" : "Lose"),
                 _totalReward.ToString()
             };
-            var item = new ListViewItem(row);
-            listViewEpisodeLogs.Items.Add(item);
-            listViewEpisodeLogs.Items[listViewEpisodeLogs.Items.Count - 1].EnsureVisible();
+
+            Invoke(new System.Action(() =>
+            {
+                var item = new ListViewItem(row);
+                listViewEpisodeLogs.Items.Add(item);
+                listViewEpisodeLogs.Items[listViewEpisodeLogs.Items.Count - 1].EnsureVisible();
+            }));
 
             _episodeNumber++;
         }
@@ -197,14 +221,18 @@ namespace ReinforcementLearning
                 {
                     while (true)
                     {
-                        Thread.Sleep(50);
+                        Thread.Sleep(100);
                         previewNextSep();
-                        Thread.Sleep(50);
+                        Thread.Sleep(100);
                         selectNextStep();
-                        Thread.Sleep(50);
+                        Thread.Sleep(100);
                         var keepGoing = updateNextStep();
 
-                        if (!keepGoing) break;
+                        if (!keepGoing)
+                        {
+                            Thread.Sleep(1000);
+                            break;
+                        }
                     }
                 }
             }).Start();

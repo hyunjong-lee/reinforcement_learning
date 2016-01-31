@@ -22,6 +22,9 @@ namespace core
             else if (nextS.UserPos == 2)
                 nextS = new GameState(nextS.UserHp - 1, nextS.UserPos, nextS.TowerHp - 1);
 
+            if (s is CompactGameState)
+                nextS = new CompactGameState(nextS.UserHp, nextS.UserPos, nextS.TowerHp);
+
             return nextS;
         }
 
@@ -29,13 +32,13 @@ namespace core
         {
             var nextS = GetNextState(s, a);
             
-            var reward = -10.0;
+            var reward = -1.0;
             if (nextS.UserHp == 0)
                 reward -= 100000;
             else if (nextS.TowerHp == 0)
                 reward = 100000;
 
-            reward += (s.TowerHp - nextS.TowerHp) * 5;
+            reward += (s.TowerHp - nextS.TowerHp) * 2;
             reward += nextS.UserHp - s.UserHp;
 
             return reward;

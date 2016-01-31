@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.cs" />
+    <Compile Include="CompactGameState.cs" />
     <Compile Include="QLearningAgent.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
