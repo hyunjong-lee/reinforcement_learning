@@ -16,10 +16,12 @@ namespace core
         public double gamma { get; set; }
         public double alpha { get; set; }
 
+        private Random _rand;
 
         public QLearningAgent()
         {
             _stateQValueMap = new Dictionary<Tuple<GameState, Action>, double>();
+            _rand = new Random(DateTime.Now.Millisecond);
         }
 
         public void registerStateQValue(GameState state, Action action, double qValue)
@@ -73,12 +75,11 @@ namespace core
         public Action getAction(GameState state)
         {
             var availActions = state.GetActionSet();
-            Random rand = new Random();
-            var flipCoin = rand.NextDouble();
+            var flipCoin = _rand.NextDouble();
             if (flipCoin < epsilon)
             {
-                var selected = rand.Next(availActions.Count());
-                return availActions.Skip(selected - 1).Take(1).First();
+                var selected = _rand.Next(availActions.Count());
+                return availActions.ToList()[selected];
             }
             else
             {
