@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace ReinforcementLearning
     {
         private GameState _currentState;
         private GameState[] _actionStateArray;
-        private QLearningAgent _agent;
+        public QLearningAgent _agent;
 
         private int _maxUserHp = 5;
         private int _maxTowerHp = 10;
@@ -221,22 +222,53 @@ namespace ReinforcementLearning
                 {
                     while (true)
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(10);
                         previewNextSep();
-                        Thread.Sleep(100);
+                        Thread.Sleep(10);
                         selectNextStep();
-                        Thread.Sleep(100);
+                        Thread.Sleep(10);
                         var keepGoing = updateNextStep();
 
                         if (!keepGoing)
                         {
-                            Thread.Sleep(1000);
+                            Thread.Sleep(10);
                             break;
                         }
                     }
                 }
+
+                var writer = new StreamWriter("QValue.csv");
+                foreach (var towerHp in Enumerable.Range(0, 11))
+                {
+                    foreach (var userPos in Enumerable.Range(0, 3))
+                    {
+                        foreach (var userHp in Enumerable.Range(0, 6))
+                        {
+                            var state = new GameState(userHp, userPos, towerHp);
+
+                            var lKey = Tuple.Create(state, core.Action.LEFT);
+                            var valueL = _agent._stateQValueMap.ContainsKey(lKey) ? _agent._stateQValueMap[lKey] : 0.0;
+                            var sKey = Tuple.Create(state, core.Action.STOP);
+                            var valueS = _agent._stateQValueMap.ContainsKey(sKey) ? _agent._stateQValueMap[sKey] : 0.0;
+                            var rKey = Tuple.Create(state, core.Action.RIGHT);
+                            var valueR = _agent._stateQValueMap.ContainsKey(rKey) ? _agent._stateQValueMap[rKey] : 0.0;
+
+                            writer.Write(valueL);
+                            writer.Write(",");
+                            writer.Write(valueS);
+                            writer.Write(",");
+                            writer.Write(valueR);
+                            writer.Write(",");
+                        }
+                    }
+
+                    writer.WriteLine();
+                }
+
+                writer.Close();
+
             }).Start();
-       }
+        }
 
         private void trackBarAlpha_ValueChanged(object sender, EventArgs e)
         {

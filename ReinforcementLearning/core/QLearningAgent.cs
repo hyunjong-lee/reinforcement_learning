@@ -8,7 +8,7 @@ namespace core
 {
     public class QLearningAgent
     {
-        private Dictionary<Tuple<GameState, Action>, Double> _stateQValueMap;
+        public Dictionary<Tuple<GameState, Action>, Double> _stateQValueMap;
 
         public static readonly double ACTION_MIN_VALUE = -987654321.0;
 
